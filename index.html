@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAMBLE WITH YOUR FRIENDS - Neo Arcade Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #e2e8f0;
+            background-image: radial-gradient(#1e293b 1.5px, transparent 1.5px);
+            background-size: 18px 18px;
+            color: #0f172a;
+            min-height: 100vh;
+            user-select: none;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Archivo Black', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .brutal-box {
+            background-color: #ffffff;
+            border: 3.5px solid #000000;
+            box-shadow: 5px 5px 0px 0px #000000;
+            transition: all 0.15s ease-in-out;
+        }
+
+        .brutal-box-yellow {
+            background-color: #ffde00;
+            border: 3.5px solid #000000;
+            box-shadow: 5px 5px 0px 0px #000000;
+        }
+
+        .brutal-box-red {
+            background-color: #ff2a2a;
+            color: #ffffff;
+            border: 3.5px solid #000000;
+            box-shadow: 5px 5px 0px 0px #000000;
+        }
+
+        .brutal-box-green {
+            background-color: #10b981;
+            color: #ffffff;
+            border: 3.5px solid #000000;
+            box-shadow: 5px 5px 0px 0px #000000;
+        }
+
+        .brutal-btn {
+            background-color: #ffffff;
+            color: #000000;
+            border: 3px solid #000000;
+            box-shadow: 4px 4px 0px 0px #000000;
+            font-weight: 900;
+            text-transform: uppercase;
+            transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.15s ease;
+            cursor: pointer;
+        }
+
+        .brutal-btn:hover:not(:disabled) {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px #000000;
+            background-color: #ffde00;
+        }
+
+        .brutal-btn:active:not(:disabled) {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px 0px #000000;
+        }
+
+        .brutal-btn-yellow {
+            background-color: #ffde00;
+            color: #000000;
+            border: 3.5px solid #000000;
+            box-shadow: 4px 4px 0px 0px #000000;
+            cursor: pointer;
+        }
+        .brutal-btn-yellow:hover:not(:disabled) {
+            background-color: #ffe83d;
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px #000000;
+        }
+
+        .brutal-btn-red {
+            background-color: #ff2a2a;
+            color: #ffffff;
+            border: 3.5px solid #000000;
+            box-shadow: 4px 4px 0px 0px #000000;
+            cursor: pointer;
+        }
+        .brutal-btn-red:hover:not(:disabled) {
+            background-color: #ff4747;
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px #000000;
+        }
+
+        .brutal-btn-green {
+            background-color: #10b981;
+            color: #ffffff;
+            border: 3.5px solid #000000;
+            box-shadow: 4px 4px 0px 0px #000000;
+            cursor: pointer;
+        }
+        .brutal-btn-green:hover:not(:disabled) {
+            background-color: #34d399;
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px #000000;
+        }
+
+        .nav-tab {
+            border: 3px solid #000000;
+            box-shadow: 3px 3px 0px 0px #000000;
+            background-color: #ffffff;
+            color: #000000;
+            font-weight: 900;
+            text-transform: uppercase;
+            transition: all 0.15s ease;
+            cursor: pointer;
+        }
+        .nav-tab.active {
+            background-color: #000000;
+            color: #ffffff;
+            transform: translate(-1px, -1px);
+            box-shadow: 5px 5px 0px 0px #ffde00;
+        }
+
+        .caution-tape {
+            background: #ffde00;
+            border-top: 3px solid #000;
+            border-bottom: 3px solid #000;
+            box-shadow: 0 4px 0 #000;
+            color: #000000;
+            font-family: 'Archivo Black', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transform: rotate(-0.5deg);
+        }
+
+        /* Card Visuals */
+        .card {
+            width: 58px;
+            height: 84px;
+            background: #ffffff;
+            border: 3px solid #000;
+            box-shadow: 3px 3px 0px #000;
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 4px;
+            position: relative;
+            margin-right: -32px;
+            transition: transform 0.2s ease, margin 0.2s ease;
+        }
+
+        @media (min-width: 768px) {
+            .card { width: 68px; height: 98px; padding: 6px; margin-right: -38px; }
+        }
+
+        .card:last-child { margin-right: 0; }
+        .card.red { color: #ff2a2a; }
+        .card.black { color: #000000; }
+        .card-value { font-size: 0.95rem; font-weight: 900; line-height: 1; }
+        .card-suit { font-size: 1.1rem; line-height: 1; }
+        
+        .card.hidden-card {
+            background: #000000;
+            border: 3px solid #000;
+        }
+        .card.hidden-card::after {
+            content: '☠️';
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #ffde00;
+        }
+        .card.hidden-card > div { display: none; }
+
+        .chip {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 0.75rem;
+            cursor: pointer;
+            border: 3px solid #000;
+            box-shadow: 3px 3px 0px #000;
+            transition: all 0.15s ease;
+        }
+        .chip:hover:not(:disabled) { transform: translateY(-4px) scale(1.08); box-shadow: 5px 5px 0px #000; }
+        .chip.selected { outline: 3px solid #000; transform: translateY(-4px) scale(1.15); box-shadow: 5px 5px 0px #ffde00; }
+        .chip-10 { background: #3b82f6; color: white; }
+        .chip-50 { background: #ff2a2a; color: white; }
+        .chip-100 { background: #10b981; color: white; }
+        .chip-500 { background: #ffde00; color: black; }
+        .chip-1000 { background: #a855f7; color: white; }
+
+        .table-felt {
+            background: #15803d;
+            border: 4px solid #000;
+            box-shadow: 6px 6px 0px 0px #000;
+        }
+
+        /* Roulette Tile Styling */
+        .roulette-tile {
+            border: 2px solid #000;
+            font-weight: 900;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.1s;
+            position: relative;
+            min-height: 38px;
+        }
+        .roulette-tile:hover { transform: scale(1.05); z-index: 10; }
+        .roulette-tile-red { background-color: #ff2a2a; color: #fff; }
+        .roulette-tile-black { background-color: #0f172a; color: #fff; }
+        .roulette-tile-green { background-color: #10b981; color: #fff; }
+        .roulette-tile-spec { background-color: #ffffff; color: #000; font-size: 0.7rem; text-transform: uppercase; font-weight: 900; }
+
+        /* Slot Reel Animation */
+        .slot-reel {
+            background: #ffffff;
+            border: 3px solid #000;
+            box-shadow: 3px 3px 0px #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            height: 100px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #e2e8f0; border-left: 2px solid #000; }
+        ::-webkit-scrollbar-thumb { background: #000000; }
+    </style>
+</head>
+<body class="p-3 md:p-6 flex flex-col items-center justify-start min-h-screen relative">
+
+    <div class="fixed -top-10 -left-10 w-44 h-44 rounded-full bg-red-500 border-4 border-black -z-10 pointer-events-none"></div>
+    <div class="fixed top-1/2 -right-16 w-56 h-56 rounded-full bg-yellow-400 border-4 border-black -z-10 pointer-events-none"></div>
+
+    <header class="w-full max-w-6xl brutal-box-yellow p-4 mb-3 relative overflow-hidden">
+        <div class="flex flex-col lg:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-black text-yellow-400 px-4 py-2 border-2 border-black text-2xl md:text-3xl font-heading uppercase tracking-tighter shadow-[3px_3px_0px_#fff]">
+                    GAMBLE ARCADE
+                </div>
+                <div>
+                    <h1 class="text-xs md:text-sm font-black uppercase text-black tracking-wider bg-white px-2 py-0.5 border-2 border-black shadow-[2px_2px_0px_#000] inline-block">
+                        CO-OP CASINO CRAWLER
+                    </h1>
+                    <p class="text-[11px] font-bold text-black mt-1">
+                        Floor <span id="floor-display" class="underline">1 (Alley Casino)</span> • Shift <span id="shift-display" class="underline">1</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2">
+                <div class="bg-white px-3 py-1.5 border-3 border-black shadow-[3px_3px_0px_#000] flex items-center gap-2">
+                    <i class="fa-solid fa-stopwatch text-red-600 text-lg"></i>
+                    <div>
+                        <div class="text-[9px] font-black uppercase text-slate-600 leading-none">Quota Timer</div>
+                        <div id="shift-timer-display" class="text-lg font-heading text-black font-mono">05:00</div>
+                    </div>
+                </div>
+
+                <div class="bg-emerald-400 px-4 py-1.5 border-3 border-black shadow-[3px_3px_0px_#000] flex items-center gap-2">
+                    <i class="fa-solid fa-wallet text-black text-lg"></i>
+                    <div>
+                        <div class="text-[9px] font-black uppercase text-black leading-none">Shared Wallet</div>
+                        <div id="global-wallet-display" class="text-xl font-heading text-black">$1,000</div>
+                    </div>
+                </div>
+
+                <div class="bg-white px-3 py-1.5 border-3 border-black shadow-[3px_3px_0px_#000] flex items-center gap-1.5">
+                    <span class="text-lg">🎟️</span>
+                    <div>
+                        <div class="text-[9px] font-black uppercase text-slate-600 leading-none">Tickets</div>
+                        <div id="tickets-display" class="text-lg font-heading text-black">5</div>
+                    </div>
+                </div>
+
+                <button id="audio-toggle-btn" onclick="toggleAudio()" class="brutal-btn px-3 py-2 text-xs flex items-center gap-1 bg-white">
+                    <i id="audio-icon" class="fa-solid fa-volume-high"></i> <span id="audio-text" class="hidden sm:inline">AUDIO ON</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="mt-3 bg-white p-2 border-3 border-black shadow-[3px_3px_0px_#000]">
+            <div class="flex justify-between items-center text-xs font-black uppercase mb-1">
+                <span><i class="fa-solid fa-sack-dollar text-emerald-600"></i> Loan Shark Target:</span>
+                <span id="quota-text-display" class="bg-yellow-400 px-2 py-0.5 border border-black">$1,000 / $1,500 Goal</span>
+            </div>
+            <div class="w-full bg-slate-200 h-4 border-2 border-black p-0.5">
+                <div id="quota-progress-fill" class="bg-emerald-500 h-full border-r-2 border-black transition-all duration-300" style="width: 66%;"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="w-full max-w-6xl caution-tape py-1 px-4 my-2 text-center text-xs md:text-sm font-black flex justify-around items-center overflow-hidden whitespace-nowrap">
+        <span>// PURE GAMBLING //</span>
+        <span class="hidden md:inline">// HIGH VOLTAGE DEBT //</span>
+        <span>// BEAT JEFF BOOTH //</span>
+        <span class="hidden md:inline">// NO REFUNDS //</span>
+        <span>// NO ASSETS //</span>
+    </div>
+
+    <nav class="w-full max-w-6xl brutal-box p-2 mb-4 flex items-center justify-between gap-2 overflow-x-auto">
+        <div class="flex items-center gap-2">
+            <button id="tab-blackjack" onclick="switchGameTab('blackjack')" class="nav-tab active px-3 py-2 text-xs md:text-sm flex items-center gap-1.5 whitespace-nowrap">
+                <i class="fa-solid fa-spade"></i> BLACKJACK
+            </button>
+            <button id="tab-roulette" onclick="switchGameTab('roulette')" class="nav-tab px-3 py-2 text-xs md:text-sm flex items-center gap-1.5 whitespace-nowrap">
+                <i class="fa-solid fa-life-ring"></i> ROULETTE
+            </button>
+            <button id="tab-poker" onclick="switchGameTab('poker')" class="nav-tab px-3 py-2 text-xs md:text-sm flex items-center gap-1.5 whitespace-nowrap">
+                <i class="fa-solid fa-crown"></i> POKER
+            </button>
+            <button id="tab-slots" onclick="switchGameTab('slots')" class="nav-tab px-3 py-2 text-xs md:text-sm flex items-center gap-1.5 whitespace-nowrap">
+                <i class="fa-solid fa-cubes"></i> SLOTS
+            </button>
+            <button id="tab-plinko" onclick="switchGameTab('plinko')" class="nav-tab px-3 py-2 text-xs md:text-sm flex items-center gap-1.5 whitespace-nowrap">
+                <i class="fa-solid fa-circle-nodes"></i> PLINKO
+            </button>
+            <button id="tab-crash" onclick="switchGameTab('crash')" class="nav-tab px-3 py-2 text-xs md:text-sm flex items-center gap-1.5 whitespace-nowrap">
+                <i class="fa-solid fa-rocket"></i> ROCKET
+            </button>
+            <button id="tab-duckraces" onclick="switchGameTab('duckraces')" class="nav-tab px-3 py-2 text-xs md:text-sm flex items-center gap-1.5 whitespace-nowrap">
+                <i class="fa-solid fa-feather text-amber-600"></i> DUCK DERBY
+            </button>
+            <button id="tab-shop" onclick="switchGameTab('shop')" class="nav-tab px-3 py-2 text-xs md:text-sm bg-yellow-400 text-black flex items-center gap-1.5 whitespace-nowrap">
+                🎟️ STORE
+            </button>
+        </div>
+
+        <button onclick="requestBailout()" class="brutal-btn-yellow px-3 py-2 text-xs font-black flex items-center gap-1 whitespace-nowrap">
+            <i class="fa-solid fa-plus-circle"></i> BAILOUT (+$500)
+        </button>
+    </nav>
+
+    <div class="w-full max-w-6xl flex flex-col lg:flex-row gap-4 items-start">
+        <div class="flex-1 w-full">
+
+            <!-- ==================== GAME 1: BLACKJACK ==================== -->
+            <div id="game-blackjack" class="w-full flex flex-col items-center">
+                <div class="w-full table-felt p-4 rounded-xl mb-3 min-h-[420px] flex flex-col justify-between items-center relative overflow-hidden">
+                    <div class="w-full flex flex-col items-center mb-2 z-10">
+                        <div class="bg-black text-white border-2 border-white px-4 py-1 text-xs font-heading uppercase tracking-widest mb-2 flex items-center gap-2 shadow-[2px_2px_0px_#000]">
+                            <i class="fa-solid fa-user-ninja text-yellow-400"></i> DEALER
+                            <span id="dealer-score" class="bg-yellow-400 text-black px-2 py-0.5 font-extrabold hidden">0</span>
+                        </div>
+                        <div id="dealer-cards" class="flex justify-center min-h-[90px]"></div>
+                    </div>
+
+                    <div class="text-center my-2 z-10 w-full max-w-md">
+                        <div id="bj-status-banner" class="bg-white border-3 border-black p-2 font-heading text-xs md:text-sm uppercase text-black shadow-[4px_4px_0px_#000]">
+                            Place your bets & defeat the Dealer to reach today's quota!
+                        </div>
+                    </div>
+
+                    <div id="bj-seats-container" class="w-full grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-3 z-10"></div>
+                </div>
+
+                <footer class="w-full brutal-box p-3 flex flex-col items-center gap-2">
+                    <div id="bj-turn-info" class="text-xs font-black uppercase text-black flex items-center gap-2">
+                        <span class="inline-block w-3 h-3 bg-yellow-400 border border-black animate-ping"></span>
+                        <span>Turn: <strong id="bj-current-seat-name" class="underline">Betting Phase</strong></span>
+                    </div>
+
+                    <div id="bj-betting-controls" class="w-full flex flex-wrap justify-between items-center gap-2 bg-slate-100 p-2 border-2 border-black">
+                        <div class="flex items-center gap-2 flex-wrap justify-center">
+                            <span class="text-xs font-black uppercase mr-1">CHIPS:</span>
+                            <button class="chip chip-10" onclick="addBjBet(10)">$10</button>
+                            <button class="chip chip-50" onclick="addBjBet(50)">$50</button>
+                            <button class="chip chip-100" onclick="addBjBet(100)">$100</button>
+                            <button class="chip chip-500" onclick="addBjBet(500)">$500</button>
+                        </div>
+
+                        <button id="bj-deal-btn" class="brutal-btn-yellow px-6 py-2.5 text-sm md:text-base font-heading disabled:opacity-40" onclick="startBjRound()" disabled>
+                            DEAL CARDS
+                        </button>
+                    </div>
+
+                    <div id="bj-action-controls" class="w-full flex justify-center gap-3 hidden">
+                        <button id="bj-hit-btn" class="brutal-btn-yellow px-6 py-2 text-sm flex items-center gap-1" onclick="bjPlayerHit()">
+                            <i class="fa-solid fa-hand-pointer"></i> HIT
+                        </button>
+                        <button id="bj-stand-btn" class="brutal-btn px-6 py-2 text-sm flex items-center gap-1" onclick="bjPlayerStand()">
+                            <i class="fa-solid fa-hand"></i> STAND
+                        </button>
+                        <button id="bj-double-btn" class="brutal-btn-red px-6 py-2 text-sm flex items-center gap-1" onclick="bjPlayerDouble()">
+                            <i class="fa-solid fa-angles-down"></i> DOUBLE
+                        </button>
+                    </div>
+                </footer>
+            </div>
+
+            <!-- ==================== GAME 2: ROULETTE ==================== -->
+            <div id="game-roulette" class="w-full flex flex-col md:flex-row gap-3 hidden">
+                <div class="w-full md:w-80 brutal-box p-3 flex flex-col items-center justify-between gap-3">
+                    <div class="w-full text-center">
+                        <h2 class="text-sm font-heading uppercase mb-2 bg-yellow-400 p-1.5 border-2 border-black shadow-[2px_2px_0px_#000]">
+                            🎡 EUROPEAN WHEEL
+                        </h2>
+                        <div class="relative flex justify-center items-center my-2">
+                            <canvas id="roulette-wheel-canvas" width="220" height="220" class="border-2 border-black rounded-full bg-slate-900 shadow-[3px_3px_0px_#000]"></canvas>
+                        </div>
+                        <div id="roulette-result-display" class="bg-black text-yellow-400 border-2 border-black p-2 font-heading text-sm uppercase shadow-[2px_2px_0px_#000] mt-1">
+                            PLACE YOUR BETS
+                        </div>
+                    </div>
+
+                    <div class="w-full bg-slate-100 p-2 border-2 border-black space-y-2">
+                        <div class="flex justify-between items-center text-xs font-black">
+                            <span>SELECTED CHIP:</span>
+                            <span id="roulette-chip-val" class="bg-black text-white px-2 py-0.5">$10</span>
+                        </div>
+                        <div class="flex justify-around gap-1">
+                            <button onclick="setRouletteActiveChip(10)" class="chip chip-10 !w-9 !h-9 text-xs">$10</button>
+                            <button onclick="setRouletteActiveChip(50)" class="chip chip-50 !w-9 !h-9 text-xs">$50</button>
+                            <button onclick="setRouletteActiveChip(100)" class="chip chip-100 !w-9 !h-9 text-xs">$100</button>
+                            <button onclick="setRouletteActiveChip(500)" class="chip chip-500 !w-9 !h-9 text-xs">$500</button>
+                        </div>
+                        <div class="flex justify-between text-xs font-black uppercase pt-1 border-t-2 border-black">
+                            <span>TOTAL BET:</span>
+                            <span id="roulette-total-bet" class="text-emerald-700 font-extrabold">$0</span>
+                        </div>
+                    </div>
+
+                    <div class="w-full flex gap-2">
+                        <button onclick="clearRouletteBets()" class="brutal-btn w-1/3 py-2 text-xs font-heading">CLEAR</button>
+                        <button id="roulette-spin-btn" onclick="spinRoulette()" class="brutal-btn-yellow w-2/3 py-2 text-xs font-heading flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-play"></i> SPIN WHEEL
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex-1 brutal-box p-3 flex flex-col justify-between bg-emerald-800">
+                    <div class="text-xs font-heading text-white uppercase bg-black px-3 py-1 border-2 border-white inline-block mb-2 self-start">
+                        ROULETTE BETTING BOARD
+                    </div>
+                    
+                    <div id="roulette-board" class="w-full grid grid-cols-13 gap-1 p-2 bg-emerald-900 border-3 border-black shadow-[4px_4px_0px_#000] text-center my-auto overflow-x-auto min-w-[480px]"></div>
+
+                    <div class="grid grid-cols-3 md:grid-cols-6 gap-1 mt-2 text-xs font-black">
+                        <div onclick="placeRouletteSpecBet('1-18')" class="roulette-tile roulette-tile-spec py-2">1 - 18</div>
+                        <div onclick="placeRouletteSpecBet('EVEN')" class="roulette-tile roulette-tile-spec py-2">EVEN</div>
+                        <div onclick="placeRouletteSpecBet('RED')" class="roulette-tile roulette-tile-red py-2">RED</div>
+                        <div onclick="placeRouletteSpecBet('BLACK')" class="roulette-tile roulette-tile-black py-2">BLACK</div>
+                        <div onclick="placeRouletteSpecBet('ODD')" class="roulette-tile roulette-tile-spec py-2">ODD</div>
+                        <div onclick="placeRouletteSpecBet('19-36')" class="roulette-tile roulette-tile-spec py-2">19 - 36</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== GAME 3: POKER ==================== -->
+            <div id="game-poker" class="w-full brutal-box p-4 bg-slate-900 text-white flex flex-col items-center gap-4 hidden">
+                <div class="w-full flex justify-between items-center bg-black p-3 border-2 border-white">
+                    <div>
+                        <h2 class="text-lg font-heading text-yellow-400">JACKS OR BETTER</h2>
+                        <p class="text-xs text-slate-300">Pair of Jacks or higher wins!</p>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xs uppercase text-slate-400">Current Bet</div>
+                        <div id="poker-bet-display" class="text-xl font-heading text-emerald-400">$50</div>
+                    </div>
+                </div>
+
+                <div id="poker-hand-cards" class="flex justify-center gap-2 my-4 min-h-[120px] flex-wrap"></div>
+
+                <div id="poker-status" class="bg-yellow-400 text-black border-2 border-black font-heading px-4 py-1.5 uppercase text-sm">
+                    Select bet & Click DEAL to start hand!
+                </div>
+
+                <div class="w-full bg-slate-800 p-3 border-2 border-white flex flex-wrap justify-between items-center gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-black text-yellow-400">BET:</span>
+                        <button onclick="changePokerBet(10)" class="brutal-btn px-3 py-1 text-xs">$10</button>
+                        <button onclick="changePokerBet(50)" class="brutal-btn px-3 py-1 text-xs">$50</button>
+                        <button onclick="changePokerBet(100)" class="brutal-btn px-3 py-1 text-xs">$100</button>
+                        <button onclick="changePokerBet(500)" class="brutal-btn px-3 py-1 text-xs">$500</button>
+                    </div>
+
+                    <button id="poker-action-btn" onclick="pokerPrimaryAction()" class="brutal-btn-yellow px-8 py-2.5 font-heading text-base">
+                        DEAL
+                    </button>
+                </div>
+            </div>
+
+            <!-- ==================== GAME 4: SLOTS ==================== -->
+            <div id="game-slots" class="w-full brutal-box p-4 bg-gradient-to-b from-purple-900 to-slate-900 text-white flex flex-col items-center gap-4 hidden">
+                <div class="bg-black text-yellow-400 border-2 border-yellow-400 px-6 py-2 text-xl font-heading uppercase text-center shadow-[3px_3px_0px_#fff]">
+                    🎰 MEGA SLOTS 777
+                </div>
+
+                <div class="grid grid-cols-3 gap-3 w-full max-w-md my-3">
+                    <div id="slot-reel-1" class="slot-reel">🎰</div>
+                    <div id="slot-reel-2" class="slot-reel">🎰</div>
+                    <div id="slot-reel-3" class="slot-reel">🎰</div>
+                </div>
+
+                <div id="slot-banner" class="bg-white text-black border-2 border-black px-4 py-2 font-heading uppercase text-sm text-center w-full max-w-md">
+                    SPIN THREE MATCHES FOR UP TO 50X PAYOUT!
+                </div>
+
+                <div class="w-full max-w-md bg-slate-800 p-3 border-2 border-white flex justify-between items-center gap-2">
+                    <div class="flex items-center gap-1">
+                        <span class="text-xs font-black">BET:</span>
+                        <button onclick="setSlotBet(10)" class="chip chip-10 !w-8 !h-8 text-xs">$10</button>
+                        <button onclick="setSlotBet(50)" class="chip chip-50 !w-8 !h-8 text-xs">$50</button>
+                        <button onclick="setSlotBet(100)" class="chip chip-100 !w-8 !h-8 text-xs">$100</button>
+                    </div>
+
+                    <button id="slot-spin-btn" onclick="spinSlots()" class="brutal-btn-yellow px-6 py-2.5 font-heading text-base">
+                        SPIN ($<span id="slot-bet-val">50</span>)
+                    </button>
+                </div>
+            </div>
+
+            <!-- ==================== GAME 5: PLINKO ==================== -->
+            <div id="game-plinko" class="w-full brutal-box p-4 bg-slate-900 text-white flex flex-col items-center gap-3 hidden">
+                <div class="flex justify-between items-center w-full bg-black p-2 border-2 border-white">
+                    <div class="font-heading text-yellow-400 text-sm">🔴 NEO PLINKO</div>
+                    <div class="text-xs font-bold text-emerald-400">PHYSICS PEG BOARD</div>
+                </div>
+
+                <div class="relative w-full flex justify-center">
+                    <canvas id="plinko-canvas" width="480" height="380" class="border-3 border-black bg-slate-950 shadow-[4px_4px_0px_#000] max-w-full"></canvas>
+                </div>
+
+                <div class="w-full bg-slate-800 p-3 border-2 border-white flex flex-wrap justify-between items-center gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-black">BET:</span>
+                        <button onclick="setPlinkoBet(10)" class="chip chip-10 !w-8 !h-8 text-xs">$10</button>
+                        <button onclick="setPlinkoBet(50)" class="chip chip-50 !w-8 !h-8 text-xs">$50</button>
+                        <button onclick="setPlinkoBet(100)" class="chip chip-100 !w-8 !h-8 text-xs">$100</button>
+                    </div>
+
+                    <button onclick="dropPlinkoBall()" class="brutal-btn-yellow px-6 py-2 font-heading text-sm">
+                        DROP BALL ($<span id="plinko-bet-val">25</span>)
+                    </button>
+                </div>
+            </div>
+
+            <!-- ==================== GAME 6: ROCKET CRASH ==================== -->
+            <div id="game-crash" class="w-full brutal-box p-4 bg-slate-950 text-white flex flex-col items-center gap-3 hidden">
+                <div class="flex justify-between items-center w-full bg-black p-2 border-2 border-white">
+                    <div class="font-heading text-red-500 text-sm"><i class="fa-solid fa-rocket"></i> CRASH ROCKET</div>
+                    <div id="crash-multiplier-display" class="font-heading text-2xl text-yellow-400">1.00x</div>
+                </div>
+
+                <div class="relative w-full flex justify-center">
+                    <canvas id="crash-canvas" width="500" height="260" class="border-3 border-black bg-slate-900 max-w-full shadow-[4px_4px_0px_#000]"></canvas>
+                </div>
+
+                <div class="w-full bg-slate-800 p-3 border-2 border-white flex flex-wrap justify-between items-center gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-black">BET:</span>
+                        <input id="crash-bet-input" type="number" value="50" min="10" step="10" class="w-20 px-2 py-1 bg-black border border-white text-yellow-400 font-bold text-sm">
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button id="crash-launch-btn" onclick="startCrashGame()" class="brutal-btn-yellow px-6 py-2 font-heading text-sm">
+                            LAUNCH
+                        </button>
+                        <button id="crash-cashout-btn" onclick="cashoutCrash()" class="brutal-btn-green px-6 py-2 font-heading text-sm hidden">
+                            CASH OUT
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== GAME 7: DUCK DERBY ==================== -->
+            <div id="game-duckraces" class="w-full brutal-box p-4 bg-amber-100 text-black flex flex-col items-center gap-3 hidden">
+                <div class="w-full bg-yellow-400 p-2 border-2 border-black flex justify-between items-center">
+                    <div class="font-heading text-sm">🦆 DUCK DERBY CHAMPIONSHIP</div>
+                    <div id="duck-race-status" class="text-xs font-black bg-black text-white px-2 py-1">PICK YOUR QUACKER</div>
+                </div>
+
+                <canvas id="duck-canvas" width="520" height="220" class="border-3 border-black bg-sky-200 w-full shadow-[4px_4px_0px_#000]"></canvas>
+
+                <div class="w-full bg-white p-3 border-2 border-black grid grid-cols-2 md:grid-cols-4 gap-2">
+                    <button onclick="selectDuckBet(0)" id="duck-btn-0" class="brutal-btn p-2 text-xs text-left">
+                        <div>1. Rubber Ducky</div>
+                        <div class="text-[10px] text-slate-600">Odds: 2.0x</div>
+                    </button>
+                    <button onclick="selectDuckBet(1)" id="duck-btn-1" class="brutal-btn p-2 text-xs text-left">
+                        <div>2. Cyber Quack</div>
+                        <div class="text-[10px] text-slate-600">Odds: 3.5x</div>
+                    </button>
+                    <button onclick="selectDuckBet(2)" id="duck-btn-2" class="brutal-btn p-2 text-xs text-left">
+                        <div>3. Sir Fluffington</div>
+                        <div class="text-[10px] text-slate-600">Odds: 5.0x</div>
+                    </button>
+                    <button onclick="selectDuckBet(3)" id="duck-btn-3" class="brutal-btn p-2 text-xs text-left">
+                        <div>4. Golden Mallard</div>
+                        <div class="text-[10px] text-slate-600">Odds: 10.0x</div>
+                    </button>
+                </div>
+
+                <div class="w-full flex justify-between items-center bg-slate-200 p-2 border-2 border-black">
+                    <div class="text-xs font-black">BET AMOUNT: $50</div>
+                    <button id="duck-start-btn" onclick="startDuckRace()" class="brutal-btn-yellow px-6 py-2 font-heading text-sm">
+                        START DERBY
+                    </button>
+                </div>
+            </div>
+
+            <!-- ==================== GAME 8: TICKET STORE ==================== -->
+            <div id="game-shop" class="w-full brutal-box p-4 bg-white flex flex-col gap-4 hidden">
+                <div class="bg-yellow-400 p-3 border-2 border-black flex justify-between items-center">
+                    <h2 class="font-heading text-lg">🎟️ ARCADE TICKET SHOP</h2>
+                    <div class="text-xs font-black bg-black text-white px-3 py-1">REDEEM YOUR HARD-EARNED WINS</div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="brutal-box p-3 flex justify-between items-center">
+                        <div>
+                            <div class="font-heading text-sm">🍀 Lucky Charm</div>
+                            <div class="text-xs text-slate-600">+5% Bonus Payouts across all games</div>
+                        </div>
+                        <button onclick="buyShopItem('lucky_charm', 5)" class="brutal-btn-yellow px-3 py-1 text-xs">
+                            5 🎟️
+                        </button>
+                    </div>
+
+                    <div class="brutal-box p-3 flex justify-between items-center">
+                        <div>
+                            <div class="font-heading text-sm">⏱️ Shift Time +60s</div>
+                            <div class="text-xs text-slate-600">Extends current shift quota timer</div>
+                        </div>
+                        <button onclick="buyShopItem('time_extend', 8)" class="brutal-btn-yellow px-3 py-1 text-xs">
+                            8 🎟️
+                        </button>
+                    </div>
+
+                    <div class="brutal-box p-3 flex justify-between items-center">
+                        <div>
+                            <div class="font-heading text-sm">🛡️ Loan Shark Shield</div>
+                            <div class="text-xs text-slate-600">Reduces floor quota targets by 15%</div>
+                        </div>
+                        <button onclick="buyShopItem('quota_shield', 12)" class="brutal-btn-yellow px-3 py-1 text-xs">
+                            12 🎟️
+                        </button>
+                    </div>
+
+                    <div class="brutal-box p-3 flex justify-between items-center">
+                        <div>
+                            <div class="font-heading text-sm">💰 High Roller Pass</div>
+                            <div class="text-xs text-slate-600">Unlocks $1,000 Chip in all table games</div>
+                        </div>
+                        <button onclick="buyShopItem('high_roller', 15)" class="brutal-btn-yellow px-3 py-1 text-xs">
+                            15 🎟️
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ==================== RIGHT SIDEBAR ==================== -->
+        <aside class="w-full lg:w-80 flex flex-col gap-3">
+            <div class="brutal-box-yellow p-3">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="font-heading text-xs uppercase"><i class="fa-solid fa-users"></i> CO-OP TABLE SEATS</h3>
+                    <span class="text-[10px] font-black bg-black text-white px-1.5 py-0.5">3 PLAYERS</span>
+                </div>
+                
+                <div id="seats-sidebar-list" class="space-y-2"></div>
+            </div>
+
+            <div class="brutal-box p-3 flex-1 flex flex-col justify-between min-h-[220px]">
+                <h3 class="font-heading text-xs uppercase border-b-2 border-black pb-1 mb-2">
+                    <i class="fa-solid fa-list-ul"></i> SHIFT LOG & LOAN MESSAGES
+                </h3>
+                <div id="activity-log" class="flex-1 overflow-y-auto max-h-56 text-xs space-y-1.5 font-mono p-1"></div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Modal Container -->
+    <div id="modal-overlay" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 hidden">
+        <div id="modal-box" class="brutal-box-yellow p-6 max-w-md w-full flex flex-col items-center text-center gap-4">
+            <h2 id="modal-title" class="text-2xl font-heading text-black uppercase">SHIFT RESULT</h2>
+            <p id="modal-message" class="text-sm font-bold text-black">Message goes here...</p>
+            <button id="modal-confirm-btn" onclick="closeModal()" class="brutal-btn-red px-8 py-2 font-heading text-base">
+                OKAY
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let gameState = {
+            wallet: 1000,
+            tickets: 5,
+            floor: 1,
+            shift: 1,
+            quotaTarget: 1500,
+            timerSeconds: 300,
+            activeTab: 'blackjack',
+            audioEnabled: true,
+            activeChips: 10,
+            upgrades: {
+                luckyCharm: false,
+                highRoller: false,
+                quotaShield: false
+            },
+            seats: [
+                { id: 1, name: "Player 1 (You)", isBot: false, bet: 0, hand: [], score: 0, isDone: false, status: "" },
+                { id: 2, name: "Deegen Dan", isBot: true, bet: 0, hand: [], score: 0, isDone: false, status: "" },
+                { id: 3, name: "Lucky Lou", isBot: true, bet: 0, hand: [], score: 0, isDone: false, status: "" }
+            ]
+        };
+
+        let timerInterval = null;
+
+        // Sound Synthesizer using Web Audio API
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+
+        function playSynthSound(type) {
+            if (!gameState.audioEnabled) return;
+            try {
+                if (!audioCtx) audioCtx = new AudioContext();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                const now = audioCtx.currentTime;
+                if (type === 'chip') {
+                    osc.frequency.setValueAtTime(600, now);
+                    osc.frequency.exponentialRampToValueAtTime(800, now + 0.05);
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } else if (type === 'win') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(400, now);
+                    osc.frequency.setValueAtTime(600, now + 0.1);
+                    osc.frequency.setValueAtTime(800, now + 0.2);
+                    gain.gain.setValueAtTime(0.4, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                } else if (type === 'lose') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(250, now);
+                    osc.frequency.exponentialRampToValueAtTime(100, now + 0.25);
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+                    osc.start(now);
+                    osc.stop(now + 0.25);
+                }
+            } catch (e) {}
+        }
+
+        function toggleAudio() {
+            gameState.audioEnabled = !gameState.audioEnabled;
+            document.getElementById('audio-icon').className = gameState.audioEnabled ? "fa-solid fa-volume-high" : "fa-solid fa-volume-xmark";
+            document.getElementById('audio-text').innerText = gameState.audioEnabled ? "AUDIO ON" : "AUDIO OFF";
+        }
+
+        function startQuotaTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if (gameState.timerSeconds > 0) {
+                    gameState.timerSeconds--;
+                    updateTimerUI();
+                } else {
+                    checkShiftEnd();
+                }
+            }, 1000);
+        }
+
+        function updateTimerUI() {
+            const mins = Math.floor(gameState.timerSeconds / 60).toString().padStart(2, '0');
+            const secs = (gameState.timerSeconds % 60).toString().padStart(2, '0');
+            document.getElementById('shift-timer-display').innerText = `${mins}:${secs}`;
+        }
+
+        function updateGlobalUI() {
+            document.getElementById('global-wallet-display').innerText = `$${gameState.wallet.toLocaleString()}`;
+            document.getElementById('tickets-display').innerText = gameState.tickets;
+            document.getElementById('floor-display').innerText = `${gameState.floor} (${getFloorName(gameState.floor)})`;
+            document.getElementById('shift-display').innerText = gameState.shift;
+            
+            const goalText = `$${gameState.wallet.toLocaleString()} / $${gameState.quotaTarget.toLocaleString()} Goal`;
+            document.getElementById('quota-text-display').innerText = goalText;
+
+            const pct = Math.min(100, Math.max(0, (gameState.wallet / gameState.quotaTarget) * 100));
+            document.getElementById('quota-progress-fill').style.width = `${pct}%`;
+
+            renderSidebarSeats();
+        }
+
+        function getFloorName(f) {
+            const names = ["Alley Casino", "Neon Strip", "Underground Syndicate", "High Roller Vault", "Grand Casino Palace"];
+            return names[f - 1] || "VIP Room";
+        }
+
+        function logActivity(msg, isPositive = true) {
+            const log = document.getElementById('activity-log');
+            const item = document.createElement('div');
+            item.className = isPositive ? "text-emerald-700 font-bold" : "text-red-600 font-bold";
+            item.innerText = `> ${msg}`;
+            log.prepend(item);
+        }
+
+        function showCustomModal(title, msg, onConfirm) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-message').innerText = msg;
+            document.getElementById('modal-overlay').classList.remove('hidden');
+            document.getElementById('modal-confirm-btn').onclick = () => {
+                closeModal();
+                if (onConfirm) onConfirm();
+            };
+        }
+
+        function closeModal() {
+            document.getElementById('modal-overlay').classList.add('hidden');
+        }
+
+        function requestBailout() {
+            gameState.wallet += 500;
+            gameState.quotaTarget += 750;
+            playSynthSound('chip');
+            logActivity("Received $500 Emergency Bailout! Loan Shark added +$750 to quota target.", false);
+            updateGlobalUI();
+        }
+
+        function switchGameTab(tab) {
+            gameState.activeTab = tab;
+            const tabs = ['blackjack', 'roulette', 'poker', 'slots', 'plinko', 'crash', 'duckraces', 'shop'];
+            tabs.forEach(t => {
+                const el = document.getElementById(`game-${t}`);
+                const navEl = document.getElementById(`tab-${t}`);
+                if (el) el.classList.toggle('hidden', t !== tab);
+                if (navEl) navEl.classList.toggle('active', t !== tab);
+            });
+        }
+
+        let bjDeck = [];
+        let bjDealerHand = [];
+        let bjCurrentTurn = 0; // 0, 1, 2 for seats
+        let bjPhase = 'betting'; // betting, playing, ended
+
+        function createDeck() {
+            const suits = ['♠', '♥', '♦', '♣'];
+            const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+            const deck = [];
+            for (let s of suits) {
+                for (let v of values) {
+                    deck.push({ suit: s, value: v, isRed: (s === '♥' || s === '♦') });
+                }
+            }
+            return deck.sort(() => Math.random() - 0.5);
+        }
+
+        function renderSidebarSeats() {
+            const container = document.getElementById('seats-sidebar-list');
+            container.innerHTML = '';
+            gameState.seats.forEach(seat => {
+                const div = document.createElement('div');
+                div.className = "bg-white p-2 border-2 border-black flex justify-between items-center text-xs font-bold";
+                div.innerHTML = `
+                    <div>
+                        <span>${seat.name}</span>
+                        ${seat.isBot ? '<span class="text-[9px] bg-slate-200 border px-1 ml-1">BOT</span>' : ''}
+                    </div>
+                    <div class="text-emerald-700">$${seat.bet} Bet</div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function addBjBet(amount) {
+            if (bjPhase !== 'betting') return;
+            if (gameState.wallet >= amount) {
+                gameState.wallet -= amount;
+                gameState.seats[0].bet += amount;
+                // Auto bots add bet proportionally
+                gameState.seats[1].bet += amount;
+                gameState.seats[2].bet += amount;
+                playSynthSound('chip');
+                updateGlobalUI();
+                document.getElementById('bj-deal-btn').disabled = false;
+            }
+        }
+
+        function startBjRound() {
+            if (gameState.seats[0].bet === 0) return;
+            bjPhase = 'playing';
+            bjDeck = createDeck();
+            bjDealerHand = [bjDeck.pop(), bjDeck.pop()];
+
+            gameState.seats.forEach(s => {
+                s.hand = [bjDeck.pop(), bjDeck.pop()];
+                s.score = calculateHandScore(s.hand);
+                s.isDone = false;
+            });
+
+            bjCurrentTurn = 0;
+            document.getElementById('bj-betting-controls').classList.add('hidden');
+            document.getElementById('bj-action-controls').classList.remove('hidden');
+            updateBjBoard();
+        }
+
+        function calculateHandScore(hand) {
+            let score = 0;
+            let aces = 0;
+            hand.forEach(card => {
+                if (card.value === 'A') { aces++; score += 11; }
+                else if (['K', 'Q', 'J'].includes(card.value)) { score += 10; }
+                else { score += parseInt(card.value); }
+            });
+            while (score > 21 && aces > 0) {
+                score -= 10;
+                aces--;
+            }
+            return score;
+        }
+
+        function updateBjBoard() {
+            // Render Dealer
+            const dealerBox = document.getElementById('dealer-cards');
+            dealerBox.innerHTML = '';
+            if (bjPhase === 'playing') {
+                dealerBox.appendChild(createCardElem(bjDealerHand[0]));
+                dealerBox.appendChild(createHiddenCardElem());
+            } else {
+                bjDealerHand.forEach(c => dealerBox.appendChild(createCardElem(c)));
+                const dScore = calculateHandScore(bjDealerHand);
+                document.getElementById('dealer-score').innerText = dScore;
+                document.getElementById('dealer-score').classList.remove('hidden');
+            }
+
+            // Render Seats
+            const seatsBox = document.getElementById('bj-seats-container');
+            seatsBox.innerHTML = '';
+            gameState.seats.forEach((seat, idx) => {
+                const sDiv = document.createElement('div');
+                const isActive = (idx === bjCurrentTurn && bjPhase === 'playing');
+                sDiv.className = `brutal-box p-2 text-center flex flex-col justify-between items-center ${isActive ? 'ring-4 ring-yellow-400 bg-yellow-50' : 'bg-white'}`;
+                
+                let cardsHtml = '';
+                seat.hand.forEach(c => {
+                    const colorClass = c.isRed ? 'red' : 'black';
+                    cardsHtml += `<div class="card ${colorClass}">
+                        <div class="card-value">${c.value}</div>
+                        <div class="card-suit">${c.suit}</div>
+                    </div>`;
+                });
+
+                sDiv.innerHTML = `
+                    <div class="text-xs font-black uppercase mb-1">${seat.name} ($${seat.bet})</div>
+                    <div class="flex justify-center my-2 h-[90px]">${cardsHtml}</div>
+                    <div class="text-xs font-bold bg-black text-white px-2 py-0.5 border">Score: ${seat.score}</div>
+                `;
+                seatsBox.appendChild(sDiv);
+            });
+
+            const currentSeat = gameState.seats[bjCurrentTurn];
+            document.getElementById('bj-current-seat-name').innerText = currentSeat ? currentSeat.name : "Betting Phase";
+
+            if (bjPhase === 'playing' && currentSeat && currentSeat.isBot) {
+                setTimeout(playBotTurn, 800);
+            }
+        }
+
+        function createCardElem(card) {
+            const div = document.createElement('div');
+            div.className = `card ${card.isRed ? 'red' : 'black'}`;
+            div.innerHTML = `<div class="card-value">${card.value}</div><div class="card-suit">${card.suit}</div>`;
+            return div;
+        }
+
+        function createHiddenCardElem() {
+            const div = document.createElement('div');
+            div.className = "card hidden-card";
+            return div;
+        }
+
+        function bjPlayerHit() {
+            if (bjPhase !== 'playing' || bjCurrentTurn !== 0) return;
+            gameState.seats[0].hand.push(bjDeck.pop());
+            gameState.seats[0].score = calculateHandScore(gameState.seats[0].hand);
+            playSynthSound('chip');
+            if (gameState.seats[0].score >= 21) {
+                bjPlayerStand();
+            } else {
+                updateBjBoard();
+            }
+        }
+
+        function bjPlayerStand() {
+            gameState.seats[bjCurrentTurn].isDone = true;
+            bjCurrentTurn++;
+            if (bjCurrentTurn >= gameState.seats.length) {
+                finishBjRound();
+            } else {
+                updateBjBoard();
+            }
+        }
+
+        function bjPlayerDouble() {
+            if (bjPhase !== 'playing' || bjCurrentTurn !== 0) return;
+            if (gameState.wallet >= gameState.seats[0].bet) {
+                gameState.wallet -= gameState.seats[0].bet;
+                gameState.seats[0].bet *= 2;
+                gameState.seats[0].hand.push(bjDeck.pop());
+                gameState.seats[0].score = calculateHandScore(gameState.seats[0].hand);
+                bjPlayerStand();
+            }
+        }
+
+        function playBotTurn() {
+            const bot = gameState.seats[bjCurrentTurn];
+            if (bot.score < 17) {
+                bot.hand.push(bjDeck.pop());
+                bot.score = calculateHandScore(bot.hand);
+            }
+            bot.isDone = true;
+            bjCurrentTurn++;
+            if (bjCurrentTurn >= gameState.seats.length) {
+                finishBjRound();
+            } else {
+                updateBjBoard();
+            }
+        }
+
+        function finishBjRound() {
+            bjPhase = 'ended';
+            let dScore = calculateHandScore(bjDealerHand);
+            while (dScore < 17) {
+                bjDealerHand.push(bjDeck.pop());
+                dScore = calculateHandScore(bjDealerHand);
+            }
+
+            let totalPayout = 0;
+            gameState.seats.forEach(seat => {
+                if (seat.score <= 21) {
+                    if (dScore > 21 || seat.score > dScore) {
+                        totalPayout += seat.bet * 2;
+                    } else if (seat.score === dScore) {
+                        totalPayout += seat.bet;
+                    }
+                }
+            });
+
+            gameState.wallet += totalPayout;
+            if (totalPayout > 0) {
+                gameState.tickets += 2;
+                playSynthSound('win');
+                logActivity(`Blackjack Round Won! Payout: +$${totalPayout}`, true);
+            } else {
+                playSynthSound('lose');
+                logActivity("Dealer won Blackjack round.", false);
+            }
+
+            document.getElementById('bj-action-controls').classList.add('hidden');
+            document.getElementById('bj-betting-controls').classList.remove('hidden');
+            gameState.seats.forEach(s => s.bet = 0);
+            document.getElementById('bj-deal-btn').disabled = true;
+            bjCurrentTurn = 0;
+            updateBjBoard();
+            updateGlobalUI();
+        }
+
+        let rouletteBets = {}; // tileKey -> betAmount
+        let rouletteActiveChip = 10;
+        let isRouletteSpinning = false;
+
+        function initRouletteBoard() {
+            const board = document.getElementById('roulette-board');
+            board.innerHTML = '';
+            
+            // Tile 0
+            const tile0 = document.createElement('div');
+            tile0.className = "roulette-tile roulette-tile-green row-span-3 col-span-1";
+            tile0.innerText = "0";
+            tile0.onclick = () => placeRouletteTileBet("0");
+            board.appendChild(tile0);
+
+            // 1 to 36
+            const redNums = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];
+            for (let i = 1; i <= 36; i++) {
+                const isRed = redNums.includes(i);
+                const tile = document.createElement('div');
+                tile.className = `roulette-tile ${isRed ? 'roulette-tile-red' : 'roulette-tile-black'}`;
+                tile.innerText = i;
+                tile.onclick = () => placeRouletteTileBet(i.toString());
+                board.appendChild(tile);
+            }
+            drawRouletteWheel(0);
+        }
+
+        function setRouletteActiveChip(val) {
+            rouletteActiveChip = val;
+            document.getElementById('roulette-chip-val').innerText = `$${val}`;
+        }
+
+        function placeRouletteTileBet(key) {
+            if (isRouletteSpinning) return;
+            if (gameState.wallet >= rouletteActiveChip) {
+                gameState.wallet -= rouletteActiveChip;
+                rouletteBets[key] = (rouletteBets[key] || 0) + rouletteActiveChip;
+                playSynthSound('chip');
+                updateRouletteUI();
+            }
+        }
+
+        function placeRouletteSpecBet(type) {
+            placeRouletteTileBet(type);
+        }
+
+        function clearRouletteBets() {
+            if (isRouletteSpinning) return;
+            let sum = 0;
+            for (let k in rouletteBets) sum += rouletteBets[k];
+            gameState.wallet += sum;
+            rouletteBets = {};
+            updateRouletteUI();
+        }
+
+        function updateRouletteUI() {
+            let total = 0;
+            for (let k in rouletteBets) total += rouletteBets[k];
+            document.getElementById('roulette-total-bet').innerText = `$${total}`;
+            updateGlobalUI();
+        }
+
+        function drawRouletteWheel(angle) {
+            const canvas = document.getElementById('roulette-wheel-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const cx = 110, cy = 110, r = 95;
+            ctx.clearRect(0, 0, 220, 220);
+
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.rotate(angle);
+
+            const total = 37;
+            const slice = (Math.PI * 2) / total;
+            for (let i = 0; i < total; i++) {
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.arc(0, 0, r, i * slice, (i + 1) * slice);
+                ctx.closePath();
+                ctx.fillStyle = i === 0 ? '#10b981' : (i % 2 === 0 ? '#ff2a2a' : '#0f172a');
+                ctx.fill();
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = '#000';
+                ctx.stroke();
+            }
+            ctx.restore();
+
+            // Pointer
+            ctx.fillStyle = '#ffde00';
+            ctx.beginPath();
+            ctx.moveTo(cx - 8, 10);
+            ctx.lineTo(cx + 8, 10);
+            ctx.lineTo(cx, 22);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        function spinRoulette() {
+            let totalBet = 0;
+            for (let k in rouletteBets) totalBet += rouletteBets[k];
+            if (totalBet === 0 || isRouletteSpinning) return;
+
+            isRouletteSpinning = true;
+            document.getElementById('roulette-spin-btn').disabled = true;
+
+            let angle = 0;
+            let speed = 0.3 + Math.random() * 0.2;
+            const spinInterval = setInterval(() => {
+                angle += speed;
+                speed *= 0.98;
+                drawRouletteWheel(angle);
+
+                if (speed < 0.005) {
+                    clearInterval(spinInterval);
+                    isRouletteSpinning = false;
+                    document.getElementById('roulette-spin-btn').disabled = false;
+                    evaluateRouletteWin();
+                }
+            }, 20);
+        }
+
+        function evaluateRouletteWin() {
+            const resultNum = Math.floor(Math.random() * 37);
+            const redNums = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];
+            const isRed = redNums.includes(resultNum);
+            const isEven = (resultNum !== 0 && resultNum % 2 === 0);
+
+            document.getElementById('roulette-result-display').innerText = `RESULT: ${resultNum} ${resultNum === 0 ? 'GREEN' : (isRed ? 'RED' : 'BLACK')}`;
+
+            let payout = 0;
+            for (let key in rouletteBets) {
+                const bet = rouletteBets[key];
+                if (key === resultNum.toString()) payout += bet * 36;
+                else if (key === 'RED' && isRed) payout += bet * 2;
+                else if (key === 'BLACK' && !isRed && resultNum !== 0) payout += bet * 2;
+                else if (key === 'EVEN' && isEven) payout += bet * 2;
+                else if (key === 'ODD' && !isEven && resultNum !== 0) payout += bet * 2;
+                else if (key === '1-18' && resultNum >= 1 && resultNum <= 18) payout += bet * 2;
+                else if (key === '19-36' && resultNum >= 19 && resultNum <= 36) payout += bet * 2;
+            }
+
+            gameState.wallet += payout;
+            if (payout > 0) {
+                gameState.tickets += 1;
+                playSynthSound('win');
+                logActivity(`Roulette Win! Payout: +$${payout}`, true);
+            } else {
+                playSynthSound('lose');
+                logActivity("Roulette Spin Lost.", false);
+            }
+
+            rouletteBets = {};
+            updateRouletteUI();
+        }
+
+        let pokerHand = [];
+        let pokerHolds = [false, false, false, false, false];
+        let pokerBet = 50;
+        let pokerState = 'deal'; // deal or draw
+
+        function changePokerBet(val) {
+            pokerBet = val;
+            document.getElementById('poker-bet-display').innerText = `$${val}`;
+        }
+
+        function pokerPrimaryAction() {
+            if (pokerState === 'deal') {
+                if (gameState.wallet < pokerBet) return;
+                gameState.wallet -= pokerBet;
+                updateGlobalUI();
+
+                const deck = createDeck();
+                pokerHand = [deck.pop(), deck.pop(), deck.pop(), deck.pop(), deck.pop()];
+                pokerHolds = [false, false, false, false, false];
+                pokerState = 'draw';
+                
+                renderPokerHand();
+                document.getElementById('poker-action-btn').innerText = "DRAW CARDS";
+                document.getElementById('poker-status').innerText = "Click cards to HOLD, then click DRAW!";
+            } else {
+                const deck = createDeck();
+                for (let i = 0; i < 5; i++) {
+                    if (!pokerHolds[i]) {
+                        pokerHand[i] = deck.pop();
+                    }
+                }
+                evaluatePokerHand();
+                pokerState = 'deal';
+                document.getElementById('poker-action-btn').innerText = "DEAL";
+            }
+        }
+
+        function togglePokerHold(idx) {
+            if (pokerState !== 'draw') return;
+            pokerHolds[idx] = !pokerHolds[idx];
+            renderPokerHand();
+        }
+
+        function renderPokerHand() {
+            const container = document.getElementById('poker-hand-cards');
+            container.innerHTML = '';
+            pokerHand.forEach((card, i) => {
+                const cDiv = createCardElem(card);
+                if (pokerHolds[i]) {
+                    cDiv.classList.add('ring-4', 'ring-yellow-400', '-translate-y-2');
+                }
+                cDiv.onclick = () => togglePokerHold(i);
+                container.appendChild(cDiv);
+            });
+        }
+
+        function evaluatePokerHand() {
+            renderPokerHand();
+            // Simple payout calculation (Jacks or Better)
+            const vals = pokerHand.map(c => c.value);
+            const counts = {};
+            vals.forEach(v => counts[v] = (counts[v] || 0) + 1);
+
+            let maxCount = Math.max(...Object.values(counts));
+            let multiplier = 0;
+
+            if (maxCount === 4) multiplier = 25;
+            else if (maxCount === 3) multiplier = 3;
+            else if (Object.values(counts).filter(c => c === 2).length === 2) multiplier = 2;
+            else if (counts['J'] === 2 || counts['Q'] === 2 || counts['K'] === 2 || counts['A'] === 2) multiplier = 1;
+
+            const payout = pokerBet * multiplier;
+            gameState.wallet += payout;
+
+            if (payout > 0) {
+                gameState.tickets += 2;
+                playSynthSound('win');
+                document.getElementById('poker-status').innerText = `WINNER! Payout: +$${payout}`;
+                logActivity(`Poker Hand Won: +$${payout}`, true);
+            } else {
+                playSynthSound('lose');
+                document.getElementById('poker-status').innerText = "No Pair Jacks or Higher. Try Again!";
+                logActivity("Poker hand lost.", false);
+            }
+            updateGlobalUI();
+        }
+
+        const slotSymbols = ['🍒', '🍋', '🔔', '💎', '7️⃣', '💀'];
+        let slotBet = 50;
+
+        function setSlotBet(val) {
+            slotBet = val;
+            document.getElementById('slot-bet-val').innerText = val;
+        }
+
+        function spinSlots() {
+            if (gameState.wallet < slotBet) return;
+            gameState.wallet -= slotBet;
+            updateGlobalUI();
+
+            const btn = document.getElementById('slot-spin-btn');
+            btn.disabled = true;
+
+            let spins = 0;
+            const spinInterval = setInterval(() => {
+                document.getElementById('slot-reel-1').innerText = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
+                document.getElementById('slot-reel-2').innerText = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
+                document.getElementById('slot-reel-3').innerText = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
+                spins++;
+
+                if (spins > 15) {
+                    clearInterval(spinInterval);
+                    btn.disabled = false;
+                    evaluateSlotWin();
+                }
+            }, 80);
+        }
+
+        function evaluateSlotWin() {
+            const r1 = document.getElementById('slot-reel-1').innerText;
+            const r2 = document.getElementById('slot-reel-2').innerText;
+            const r3 = document.getElementById('slot-reel-3').innerText;
+
+            let mult = 0;
+            if (r1 === r2 && r2 === r3) {
+                if (r1 === '7️⃣') mult = 50;
+                else if (r1 === '💎') mult = 25;
+                else if (r1 === '🔔') mult = 15;
+                else mult = 10;
+            } else if (r1 === r2 || r2 === r3 || r1 === r3) {
+                mult = 2;
+            }
+
+            const payout = slotBet * mult;
+            gameState.wallet += payout;
+
+            if (payout > 0) {
+                gameState.tickets += 1;
+                playSynthSound('win');
+                document.getElementById('slot-banner').innerText = `JACKPOT! YOU WON +$${payout}`;
+                logActivity(`Slot Machine Won: +$${payout}`, true);
+            } else {
+                playSynthSound('lose');
+                document.getElementById('slot-banner').innerText = "NO MATCH! SPIN AGAIN";
+                logActivity("Slot spin lost.", false);
+            }
+            updateGlobalUI();
+        }
+
+        let plinkoBet = 25;
+        let plinkoBalls = [];
+
+        function setPlinkoBet(val) {
+            plinkoBet = val;
+            document.getElementById('plinko-bet-val').innerText = val;
+        }
+
+        function initPlinkoCanvas() {
+            const canvas = document.getElementById('plinko-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            function animatePlinko() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Draw Pegs
+                ctx.fillStyle = '#ffffff';
+                const rows = 7;
+                for (let r = 0; r < rows; r++) {
+                    const count = r + 3;
+                    const startX = (canvas.width - (count - 1) * 45) / 2;
+                    for (let c = 0; c < count; c++) {
+                        ctx.beginPath();
+                        ctx.arc(startX + c * 45, 50 + r * 38, 4, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+
+                // Draw Multiplier Slots at bottom
+                const multipliers = [10, 2, 0.5, 0.2, 0.5, 2, 10];
+                const slotW = canvas.width / multipliers.length;
+                multipliers.forEach((m, idx) => {
+                    ctx.fillStyle = m >= 2 ? '#ffde00' : '#ff2a2a';
+                    ctx.fillRect(idx * slotW + 2, canvas.height - 35, slotW - 4, 30);
+                    ctx.fillStyle = '#000000';
+                    ctx.font = 'bold 12px Space Grotesk';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(`${m}x`, idx * slotW + slotW / 2, canvas.height - 16);
+                });
+
+                // Update & Draw Balls
+                plinkoBalls.forEach((b, i) => {
+                    b.y += b.vy;
+                    b.x += b.vx;
+                    b.vy += 0.2; // Gravity
+
+                    // Simple Peg Collision
+                    for (let r = 0; r < rows; r++) {
+                        const count = r + 3;
+                        const startX = (canvas.width - (count - 1) * 45) / 2;
+                        for (let c = 0; c < count; c++) {
+                            const px = startX + c * 45;
+                            const py = 50 + r * 38;
+                            const dist = Math.hypot(b.x - px, b.y - py);
+                            if (dist < 10) {
+                                b.vx = (Math.random() - 0.5) * 3;
+                                b.vy *= -0.5;
+                            }
+                        }
+                    }
+
+                    ctx.fillStyle = '#ff2a2a';
+                    ctx.beginPath();
+                    ctx.arc(b.x, b.y, 7, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    if (b.y >= canvas.height - 40) {
+                        const hitSlot = Math.floor(b.x / slotW);
+                        const mult = multipliers[Math.min(multipliers.length - 1, Math.max(0, hitSlot))];
+                        const payout = plinkoBet * mult;
+                        gameState.wallet += payout;
+                        if (payout > plinkoBet) playSynthSound('win');
+                        logActivity(`Plinko Ball Hit ${mult}x: +$${payout}`, payout > plinkoBet);
+                        updateGlobalUI();
+                        plinkoBalls.splice(i, 1);
+                    }
+                });
+
+                requestAnimationFrame(animatePlinko);
+            }
+            animatePlinko();
+        }
+
+        function dropPlinkoBall() {
+            if (gameState.wallet < plinkoBet) return;
+            gameState.wallet -= plinkoBet;
+            updateGlobalUI();
+
+            const canvas = document.getElementById('plinko-canvas');
+            plinkoBalls.push({
+                x: canvas.width / 2 + (Math.random() - 0.5) * 10,
+                y: 15,
+                vx: (Math.random() - 0.5) * 1,
+                vy: 1
+            });
+        }
+
+        let crashMultiplier = 1.00;
+        let crashActive = false;
+        let crashInterval = null;
+
+        function startCrashGame() {
+            const betInput = document.getElementById('crash-bet-input');
+            const bet = parseInt(betInput.value);
+            if (gameState.wallet < bet || crashActive) return;
+
+            gameState.wallet -= bet;
+            updateGlobalUI();
+
+            crashActive = true;
+            crashMultiplier = 1.00;
+            const crashPoint = 1.00 + Math.random() * Math.random() * 15;
+
+            document.getElementById('crash-launch-btn').classList.add('hidden');
+            document.getElementById('crash-cashout-btn').classList.remove('hidden');
+
+            crashInterval = setInterval(() => {
+                crashMultiplier += 0.03 + (crashMultiplier * 0.01);
+                document.getElementById('crash-multiplier-display').innerText = `${crashMultiplier.toFixed(2)}x`;
+                drawCrashGraph();
+
+                if (crashMultiplier >= crashPoint) {
+                    clearInterval(crashInterval);
+                    crashActive = false;
+                    playSynthSound('lose');
+                    document.getElementById('crash-multiplier-display').innerText = `💥 CRASHED AT ${crashMultiplier.toFixed(2)}x`;
+                    logActivity("Rocket Crashed!", false);
+
+                    document.getElementById('crash-launch-btn').classList.remove('hidden');
+                    document.getElementById('crash-cashout-btn').classList.add('hidden');
+                }
+            }, 100);
+        }
+
+        function cashoutCrash() {
+            if (!crashActive) return;
+            clearInterval(crashInterval);
+            crashActive = false;
+
+            const bet = parseInt(document.getElementById('crash-bet-input').value);
+            const payout = Math.floor(bet * crashMultiplier);
+            gameState.wallet += payout;
+            gameState.tickets += 2;
+
+            playSynthSound('win');
+            logActivity(`Rocket Cashed Out at ${crashMultiplier.toFixed(2)}x: +$${payout}`, true);
+            updateGlobalUI();
+
+            document.getElementById('crash-launch-btn').classList.remove('hidden');
+            document.getElementById('crash-cashout-btn').classList.add('hidden');
+        }
+
+        function drawCrashGraph() {
+            const canvas = document.getElementById('crash-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.strokeStyle = '#ffde00';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(20, canvas.height - 20);
+            const progress = Math.min(canvas.width - 40, (crashMultiplier - 1) * 30);
+            ctx.lineTo(20 + progress, canvas.height - 20 - Math.min(canvas.height - 40, progress * 0.5));
+            ctx.stroke();
+        }
+
+        let duckBet = 0;
+        let duckPositions = [0, 0, 0, 0];
+        let duckInterval = null;
+
+        function selectDuckBet(idx) {
+            duckBet = idx;
+            for (let i = 0; i < 4; i++) {
+                document.getElementById(`duck-btn-${i}`).classList.toggle('ring-4', i === idx);
+                document.getElementById(`duck-btn-${i}`).classList.toggle('ring-yellow-400', i === idx);
+            }
+        }
+
+        function startDuckRace() {
+            if (gameState.wallet < 50) return;
+            gameState.wallet -= 50;
+            updateGlobalUI();
+
+            duckPositions = [0, 0, 0, 0];
+            const canvas = document.getElementById('duck-canvas');
+            const ctx = canvas.getContext('2d');
+
+            duckInterval = setInterval(() => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                for (let i = 0; i < 4; i++) {
+                    duckPositions[i] += Math.random() * 4;
+                    
+                    // Draw Lane
+                    ctx.fillStyle = i % 2 === 0 ? '#38bdf8' : '#0284c7';
+                    ctx.fillRect(0, i * 55, canvas.width, 50);
+
+                    // Draw Duck
+                    ctx.font = '24px serif';
+                    ctx.fillText('🦆', duckPositions[i], i * 55 + 35);
+                }
+
+                const winnerIndex = duckPositions.findIndex(p => p >= canvas.width - 40);
+                if (winnerIndex !== -1) {
+                    clearInterval(duckInterval);
+                    const odds = [2.0, 3.5, 5.0, 10.0];
+                    if (winnerIndex === duckBet) {
+                        const payout = Math.floor(50 * odds[winnerIndex]);
+                        gameState.wallet += payout;
+                        playSynthSound('win');
+                        logActivity(`Duck ${winnerIndex + 1} Won Derby! Payout: +$${payout}`, true);
+                    } else {
+                        playSynthSound('lose');
+                        logActivity(`Duck ${winnerIndex + 1} Won Derby. Lost $50`, false);
+                    }
+                    updateGlobalUI();
+                }
+            }, 50);
+        }
+
+        function buyShopItem(item, cost) {
+            if (gameState.tickets < cost) return;
+            gameState.tickets -= cost;
+
+            if (item === 'lucky_charm') gameState.upgrades.luckyCharm = true;
+            else if (item === 'time_extend') gameState.timerSeconds += 60;
+            else if (item === 'quota_shield') gameState.quotaTarget = Math.floor(gameState.quotaTarget * 0.85);
+
+            playSynthSound('win');
+            logActivity(`Bought ${item} from Arcade Store!`, true);
+            updateGlobalUI();
+        }
+
+        function checkShiftEnd() {
+            if (gameState.wallet >= gameState.quotaTarget) {
+                gameState.floor++;
+                gameState.shift++;
+                gameState.quotaTarget = Math.floor(gameState.quotaTarget * 1.8);
+                gameState.timerSeconds = 300;
+                showCustomModal("FLOOR COMPLETED!", `You survived Floor ${gameState.floor - 1}! Advancing to Floor ${gameState.floor}.`);
+            } else {
+                showCustomModal("BANKRUPT / SHIFT FAILED", "Loan Shark Jeff Booth took all assets. Resetting to Floor 1...", () => {
+                    gameState.wallet = 1000;
+                    gameState.floor = 1;
+                    gameState.shift = 1;
+                    gameState.quotaTarget = 1500;
+                    gameState.timerSeconds = 300;
+                    updateGlobalUI();
+                });
+            }
+        }
+
+        window.onload = function() {
+            startQuotaTimer();
+            initRouletteBoard();
+            initPlinkoCanvas();
+            renderSidebarSeats();
+            updateGlobalUI();
+            logActivity("Welcome to GAMBLE ARCADE! Complete floor quotas before time runs out.");
+        };
+    </script>
+</body>
+</html>
